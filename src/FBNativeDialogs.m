@@ -123,8 +123,7 @@
                                                      handler:(FBShareDialogHandler)handler  {
     // Can we even call the iOS API?
     Class composeViewControllerClass = [SLComposeViewController class];
-    if (composeViewControllerClass == nil ||
-        [composeViewControllerClass isAvailableForServiceType:SLServiceTypeFacebook] == NO) {
+    if (composeViewControllerClass == nil) {
         if (handler) {
             handler(FBNativeDialogResultError, [self createError:FBErrorNativeDialogNotSupported
                                                          session:session]);
@@ -138,18 +137,18 @@
         // running unTOSed and we will rely on the OS to authenticate/TOS the user).
         session = [FBSession activeSession];
     }
-    if (session != nil) {
-        // If we have an open session and it's not native auth, fail. If the session is
-        // not open, attempting to put up the dialog will prompt the user to configure
-        // their account.
-        if (session.isOpen && session.accessTokenData.loginType != FBSessionLoginTypeSystemAccount) {
-            if (handler) {
-                handler(FBNativeDialogResultError, [self createError:FBErrorNativeDialogInvalidForSession
-                                                             session:session]);
-            }
-            return nil;
-        }
-    }
+//    if (session != nil) {
+//        // If we have an open session and it's not native auth, fail. If the session is
+//        // not open, attempting to put up the dialog will prompt the user to configure
+//        // their account.
+//        if (session.isOpen && session.accessTokenData.loginType != FBSessionLoginTypeSystemAccount) {
+//            if (handler) {
+//                handler(FBNativeDialogResultError, [self createError:FBErrorNativeDialogInvalidForSession
+//                                                             session:session]);
+//            }
+//            return nil;
+//        }
+//    }
     
     SLComposeViewController *composeViewController = [composeViewControllerClass composeViewControllerForServiceType:SLServiceTypeFacebook];
     if (composeViewController == nil) {
